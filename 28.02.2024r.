@@ -27,7 +27,7 @@ c(3,6,1,87,34,6)
 Wektor1=c("gen","adnotacja","CDS")
 Wektor1[2]
 
-#rm("Tabeleczka2") #usuwa zmienne
+rm("kolory") #usuwa zmienne
 
 #TABELA======================================================
 Tabeleczka=read.table("Tabela.txt",sep=";",header=T) #tworzy robocza tabelke
@@ -38,3 +38,22 @@ write.csv2(Tabeleczka,"Tabela2",quote=F,row.names=F) #zapisuje plik w folderze
 #WYKRES======================================================
 plot(5)
 plot(x=c(2,5,7,2),y=c(10,100,20,40))
+wektorek=c(5,10,15,12,4)
+barplot(wektorek, #plot, barplot, hist, pie
+     type="o",
+     main="Wykres slupkowy",
+     col=c("pink","violet","white","gray","black"))
+
+plot(Tabeleczka[,3])
+
+#Oblicz dlugosc wszystkich genow (max,min,sr,odchylenie standard)
+Tabeleczka[,3]
+sum(Tabeleczka[,3])
+min(Tabeleczka[,3])
+max(Tabeleczka[,3])
+mean(Tabeleczka[,3]) #sr
+sd(Tabeleczka[,3]) #odchylenie
+
+#pieplot z ilosci typow genow
+Liczby=table(Tabeleczka$typ)
+pie(Liczby,labels=names(Liczby),col=c("red","blue","green","yellow"),main="Wykres kolowy")
