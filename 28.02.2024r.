@@ -1,0 +1,40 @@
+# Weronika Mądzielewska
+# Technologie cyfryzacji danych biotechnologicznych
+# 28.02.2024r.
+
+#LOKALIZACJA PLIKU===========================================
+getwd() #wyswietla lokalizacje pliku
+?setwd()
+setwd(dir="c:/Users/Student/OneDrive - University of Warmia and Mazuria in Olsztyn/Pulpit/WerMad/") #reczne ustalanie lokalizacji pliku
+
+#DZIALANIA===================================================
+sum(x=2, y=3)
+r=3 #trzeba wczytac zmienna do environment
+pi*r^2
+#dzialania blokowe oddzielamy enterem po znaku
+2=(
+  (2+2)+3+
+    7*2
+)
+sqrt(9)
+2/4
+
+#WEKTORY=====================================================
+2:4 #wektor
+c(2:20)
+c(2:15, 17:20)
+c(3,6,1,87,34,6)
+Wektor1=c("gen","adnotacja","CDS")
+Wektor1[2]
+
+#rm("Tabeleczka2") #usuwa zmienne
+
+#TABELA======================================================
+Tabeleczka=read.table("Tabela.txt",sep=";",header=T) #tworzy robocza tabelke
+Tabeleczka[2,3] #odwolanie do rzedu i kolumny\
+Tabeleczka[1,1]="COX1"
+write.csv2(Tabeleczka,"Tabela2",quote=F,row.names=F) #zapisuje plik w folderze
+
+#WYKRES======================================================
+plot(5)
+plot(x=c(2,5,7,2),y=c(10,100,20,40))
