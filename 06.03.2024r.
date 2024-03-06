@@ -31,4 +31,4 @@ ggplot(data = BLAST, mapping = aes(Per..ident, E.value, color = Query.Cover)) +
   theme_bw()
 write.csv(BLAST, "BLAST_Hemoglobin_potato_1000-Descriptions_modified.csv", row.names=FALSE)
 
-#https://r-statistics.co/ggplot2-Tutorial-With-R.html
+#https://r-statistics.co/R-Tutorial.html
