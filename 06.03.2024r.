@@ -1,0 +1,34 @@
+# Weronika Mądzielewska
+# Technologie cyfryzacji danych biotechnologicznych
+# 06.03.2024r.
+
+setwd(dir="c:/Users/Student/OneDrive - University of Warmia and Mazuria in Olsztyn/Pulpit/WerMad/")
+getwd()
+
+#TABELA======================================================
+BLAST=read.csv("BLAST_Hemoglobin_potato_1000-Descriptions.csv")
+BLAST$kolor="grey"
+for (i in 1:nrow(BLAST)) {
+  if (BLAST$Per..ident[i]>50) {
+    BLAST$kolor[i]="red"
+  }
+}
+BLAST=BLAST[-nrow(BLAST),] #usuwanie ostatniego wiersza
+write.csv(BLAST,"BLAST_Hemoglobin_potato_1000-Descriptions_colored.csv",row.names=FALSE)
+
+plot(BLAST$Per..ident,BLAST$E.value,col=BLAST$kolor)
+
+cbin #laczenie tabel
+
+#TABELA======================================================
+
+install.packages("ggplot2")
+library("ggplot2")
+BLAST$Query.Cover=as.numeric(gsub(pattern ="%", replacement="",BLAST$Query.Cover))
+ggplot(data = BLAST, mapping = aes(Per..ident, E.value, color = Query.Cover)) +
+  geom_point() +
+  geom_smooth() +
+  theme_bw()
+write.csv(BLAST, "BLAST_Hemoglobin_potato_1000-Descriptions_modified.csv", row.names=FALSE)
+
+#https://r-statistics.co/ggplot2-Tutorial-With-R.html
