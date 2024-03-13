@@ -1,0 +1,23 @@
+library(dplyr)
+
+# Wybierz trzy najbardziej liczne kategorie biotypów
+top_biotype <- names(sort(table(gtf_geny$gene_biotype), decreasing = TRUE))[1:3]
+
+# Przefiltruj dane według trzech najbardziej licznych kategorii biotypów
+gtf_top_biotype <- gtf_geny %>%
+  filter(gene_biotype %in% top_biotype)
+
+# Oblicz ilość exonów dla każdego genu/transkryptu
+exon_counts <- gtf_top_biotype %>%
+  group_by(gene_id) %>%
+  summarise(exon_count = sum(width))
+
+# Połącz dane o długości genów i ilości exonów
+merged_data <- inner_join(gtf_top_biotype, exon_counts, by = "gene_id")
+
+# Stwórz scatterplot
+ggplot(merged_data, aes(x = exon_count, y = width, color = gene_biotype)) +
+  geom_point() +
+  facet_wrap(~ gene_biotype, scales = "free") +
+  labs(x = "Ilość exonów", y = "Długość genów/transkryptów", color = "Biotyp") +
+  theme_minimal()
