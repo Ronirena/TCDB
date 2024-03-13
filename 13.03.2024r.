@@ -8,7 +8,6 @@ library("ggplot2")
 setwd(dir="c:/Users/Student/OneDrive - University of Warmia and Mazuria in Olsztyn/Pulpit/WerMad/")
 getwd()
 
-
 #TABELA======================================================
 gtf=import.gff("Homo_sapiens.GRCh38.111.chr.gtf")
 class(gtf)
@@ -24,7 +23,25 @@ gtf_geny=gtf_tab[gtf_tab$type=="gene",]
 table(gtf_geny$gene_biotype)
 ggplot(gtf_geny,aes(gtf_geny$width,gtf_geny$start,colour=gtf_geny$gene_biotype))+geom_point()
 
+#WYKRES1=====================================================
+#pieplot lub barplot obrazujacy udzial poszczegolnych typow genow
+sumy <- aggregate(start ~ gene_biotype, data = gtf_geny, FUN = length)
+ggplot(sumy, aes(x = "", y = start, fill = gene_biotype)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar(theta = "y") +
+  geom_text(aes(label = gene_biotype), position = position_stack(vjust = 0.5), size = 3, color = "white") +  # Dodanie etykiet
+  labs(fill = "Gene Biotype", title = "Wykres kołowy biotypów genów") +
+  theme_void() +
+  theme(legend.position = "right")
 
-ggplot(gtf_geny, aes(x = gene_biotype, y = width, fill = gene_biotype)) +
-  geom_boxplot() + scale_y_log10() +
-  labs(x = "Biotyp", y = "Długość genu", title = "Rozklad dlugosci genów w zalezności od biotypu")
+#WYKRES2=====================================================
+#boxplot lub violinplot rokzladu dlugosci z podzialem na chromosomy
+ggplot(gtf_geny, aes(x = factor(seqnames), y = width, fill = factor(seqnames))) +
+  geom_violin() +
+  labs(x = "seqnames", y = "width", fill = "seqnames") +
+  scale_fill_manual(values=rainbow(length(unique(gtf_geny$seqnames)))) +
+  scale_y_continuous(limits=c(0,1500))
+
+#WYKRES3=====================================================
+#scaterplot (wykresu punktowy) z rozkladu dlugosci genow/transkryptow
+# wzgledem ilosci exonow w gene/transkrypcie z podzialem na 3 najbardziej liczne kategorie biotypow
