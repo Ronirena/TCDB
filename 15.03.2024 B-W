@@ -1,0 +1,24 @@
+# Weronika Mądzielewska
+# Bioinformatryka - Wykład
+# 13.03.2024r.
+
+#BIOCONDUCTOR=Rsubread=======================================
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+BiocManager::install("Rsubread")
+
+browseVignettes("Rsubread")
+
+#Budowanie=indeksu===========================================
+library(Rsubread)
+ref <- system.file("extdata","reference.fa",package="Rsubread")
+buildindex(basename="reference_index",reference=ref)
+
+reads1 <- system.file("extdata","reads1.txt.gz",package="Rsubread")
+reads2 <- system.file("extdata","reads2.txt.gz",package="Rsubread")
+all.equal(length(reads1),length(reads2))
+align.stat2 <- align(index = "reference_index", readfile1 = reads1, readfile2 = reads2,
+
+propmapped("alignResultsPE.BAM")
+fc_PE <- featureCounts("alignResultsPE.BAM",isPairedEnd=TRUE)
+head(fc_PE$counts)
