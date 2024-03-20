@@ -18,6 +18,7 @@ reads1 <- system.file("extdata","reads1.txt.gz",package="Rsubread")
 reads2 <- system.file("extdata","reads2.txt.gz",package="Rsubread")
 all.equal(length(reads1),length(reads2))
 align.stat2 <- align(index = "reference_index", readfile1 = reads1, readfile2 = reads2,
+output_file="alignResultsPE.BAM",phredOffset=64)
 
 propmapped("alignResultsPE.BAM")
 fc_PE <- featureCounts("alignResultsPE.BAM",isPairedEnd=TRUE)
