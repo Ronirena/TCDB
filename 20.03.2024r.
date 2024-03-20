@@ -16,7 +16,94 @@ fc_PE$counts
 
 #BLAST nie dziala poprawnie biologicznie
 #StatQuest
+#CRAN
 
 #Statistica==================================================
 #https://bioconductor.org/packages/release/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 library(DESeq2)
+
+#Instalowanie-biblioteki=====================================
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("pasilla")
+browseVignettes("pasilla")
+
+library("pasilla")
+pasCts <- system.file("extdata",
+                      "pasilla_gene_counts.tsv",
+                      package="pasilla", mustWork=TRUE)
+pasAnno <- system.file("extdata",
+                       "pasilla_sample_annotation.csv",
+                       package="pasilla", mustWork=TRUE)
+cts <- as.matrix(read.csv(pasCts,sep="\t",row.names="gene_id"))
+coldata <- read.csv(pasAnno, row.names=1)
+coldata <- coldata[,c("condition","type")]
+coldata$condition <- factor(coldata$condition)
+coldata$type <- factor(coldata$type)
+
+head(cts,2)
+coldata
+rownames(coldata) <- sub("fb", "", rownames(coldata))
+all(rownames(coldata) %in% colnames(cts))
+all(rownames(coldata) == colnames(cts))
+cts <- cts[, rownames(coldata)]
+all(rownames(coldata) == colnames(cts))
+dds <- DESeqDataSetFromMatrix(countData = cts,
+                              colData = coldata,
+                              design = ~ condition)
+dds
+
+dds$condition <- factor(dds$condition, levels = c("untreated","treated"))
+dds$condition <- droplevels(dds$condition)
+
+dds <- DESeq(dds)
+res <- results(dds)
+head(res)
+nrow(res)
+
+#H0=ekspresja genow nie zmienia sie
+res_tab<-as.data.frame(res)
+res_sig<-res_tab[!is.na(res_tab$log2FoldChange),]
+res_sig<-res_sig[!is.na(res_sig$padj),]
+
+ntd <- normTransform(dds)
+selected<-res_sig[res_sig$log2FoldChange >0.9 & res_sig$log2FoldChange <1.1,]
+cts[rownames(cts) %in% rownames(selected),]
+sel<-c("FBgn0000078","FBgn0000079","FBgn0000233","FBgn0000359")
+cts[rownames(cts )%in% sel,]
+res_sig[rownames(res_sig)%in% sel,]
+
+DEG<-res_sig[abs(res_sig$log2FoldChange)>1 & res_sig$padj< 0.05,]
+nrow(DEG)
+
+#WYKRES1=====================================================
+vsd <- vst(dds, blind=FALSE)
+rld <- rlog(dds, blind=FALSE)
+head(assay(vsd), 3)
+plotPCA(vsd, intgroup=c("condition", "type"))
+
+#WYKRES2=====================================================
+plotMA(res, ylim=c(-2,2))
+
+#WYKRES3=====================================================
+sampleDists <- dist(t(assay(vsd)))
+
+library(RColorBrewer)
+library(pheatmap)
+
+sampleDistMatrix <- as.matrix(sampleDists)
+rownames(sampleDistMatrix) <- paste(vsd$condition, vsd$type, sep="-")
+colnames(sampleDistMatrix) <- NULL
+colors <- colorRampPalette( rev(brewer.pal(9, "Blues")) )(255)
+pheatmap(sampleDistMatrix,
+         clustering_distance_rows=sampleDists,
+         clustering_distance_cols=sampleDists,
+         col=colors)
+
+#WYKRES4=====================================================
+select <- order(rowMeans(counts(dds,normalized=TRUE)),
+                decreasing=TRUE)[1:20]
+df <- as.data.frame(colData(dds)[,c("condition","type")])
+pheatmap(assay(ntd)[select,], cluster_rows=FALSE, show_rownames=FALSE,
+         cluster_cols=FALSE, annotation_col=df)
