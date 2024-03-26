@@ -1,0 +1,61 @@
+#Weronika Mądzielewska
+# Bioinformatyka - Zaliczenie
+# 26.03.2024r.
+
+# Instalacja i załadowanie wymaganych pakietów
+if (!require("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+
+BiocManager::install("SRAdb")
+
+# Załadowanie bibliotek
+library(rentrez)
+library(SRAdb)
+
+# Funkcja do pobierania identyfikatorów SRA za pomocą rentrez
+get_sra_ids <- function(term, retmax = 1) {
+  esearch_result <- entrez_search(db = "SRA", term = term, retmax = retmax)  
+  sra_ids <- esearch_result$ids
+  return(sra_ids)
+}
+
+# Funkcja do pobierania plików SRA za pomocą SRAdb i konwersji na FASTQ
+download_and_convert_sra <- function(srx_ids) {
+  # Nawiązanie połączenia z bazą danych SRAdb
+  sqlfile <- file.path(system.file('extdata', package='SRAdb'), 'SRAmetadb_demo.sqlite')
+  sra_con <- dbConnect(SQLite(), sqlfile)
+  
+  for (srx_id in srx_ids) {
+    # Pobieranie plików SRA
+    cat("Pobieranie plików SRA dla identyfikatora:", srx_id, "\n")
+    sraFiles <- listSRAfile(c(srx_id), sra_con, fileType = 'SRA')
+    
+    # Pobieranie plików SRA
+    if (!is.null(sraFiles)) {
+      cat("Pobieranie plików SRA dla identyfikatora:", srx_id, "\n")
+      getSRAfile(sraFiles, sra_con, fileType = 'SRA')
+      
+      # Konwersja plików SRA na FASTQ
+      cat("Konwertowanie plików SRA na FASTQ dla identyfikatora:", srx_id, "\n")
+      for (sra_file in sraFiles) {
+        system(paste("fastq-dump", sra_file))
+      }
+    } else {
+      cat("Brak plików SRA dla identyfikatora:", srx_id, "\n")
+    }
+  }
+}
+
+# Projekt do wyszukania
+search_term <- "varroa bee metagenome"
+
+# Wyszukanie identyfikatorów SRA za pomocą rentrez
+sra_ids <- get_sra_ids(search_term, retmax = 1)
+
+# Wywołanie funkcji do pobierania i konwertowania plików SRA
+if (length(sra_ids) > 0) {
+  cat("Znaleziono identyfikator SRA:", sra_ids, "\n")
+  download_and_convert_sra(sra_ids)
+} else {
+  cat("Nie znaleziono identyfikatorów SRA dla podanego projektu.\n")
+}
