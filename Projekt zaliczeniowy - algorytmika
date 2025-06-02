@@ -1,0 +1,134 @@
+# Tytuł: Warzenie piwa
+# Autorzy: Weronika Mądzielewska, Paweł Miracki
+# Opis: Kodowanie procedury warzenia piwa na podstawie przygotowanego schematu blokowego (flowcharta)
+
+def piwerko():
+    print("Zaczynamy warzenie piwa!")
+
+    # Krok 1: Słód
+    print("\nKrok 1: Przygotowanie słodu:")
+    while True:
+        decyzja = input("Czy słód jest ześrutowany? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Przechodzimy do kroku 2.")
+            break
+        else:
+            print("Ześrutuj słód.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 2: Podgrzewanie wody
+    print("\nKrok 2: Podgrzewanie 15 litrów wody do 68°C:")
+    while True:
+        decyzja = input("Czy woda osiągnęła 68°C? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Dodaj słód i utrzymuj temperaturę 66°C przez 40 minut.")
+            break
+        else:
+            print("Zaczekaj, aż woda się nagrzeje.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 3: Zwiększenie temperatury
+    print("\nKrok 3: Podniesienie temperatury zacierania:")
+    while True:
+        decyzja = input("Czy minęło 40 minut? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Podgrzej zacier do 72°C i utrzymuj przez 15 minut.")
+            break
+        else:
+            print("Zaczekaj.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 4: Próba jodowa
+    print("\nKrok 4: Przeprowadzenie próby jodowej:")
+    while True:
+        decyzja = input("Czy wynik próby jodowej jest negatywny? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Podnieś temperaturę do 78°C i wyłącz grzanie.")
+            break
+        else:
+            print("Zaczekaj jeszcze 10 minut.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 5: Filtracja zacieru
+    print("\nKrok 5: Filtracja zacieru:")
+    print("Przenieś zacier do kadzi filtracyjnej, zaczekaj 20 minut na ułożenie złoża filtracyjnego. Rozpocznij filtrację, zwracając filtrat do momentu, aż brzeczka będzie klarowna.")
+    while True:
+        decyzja = input("Czy płynie klarowna brzeczka? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Przefiltruj brzeczkę do uzyskania około 25 litrów w kadzi warzelnej.")
+            break
+        else:
+            print("Zawracaj filtrat do momentu uzyskania klarownej brzeczki. Jeśli nie jest to możliwe, możesz przejść dalej.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 6: Gotowanie brzeczki
+    print("\nKrok 6: Gotowanie brzeczki:")
+    print("Zagotuj brzeczkę i dodaj pierwszą porcję chmielu (na goryczkę).")
+    while True:
+        decyzja = input("Czy dodałeś chmiel? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Gotuj brzeczkę przez 60 minut.")
+            break
+        else:
+            print("Dodaj chmiel przed rozpoczęciem gotowania.")
+            input("Wciśnij Enter, gdy będzie gotowe...")
+
+    # Krok 7: Chmielenie na aromat
+    print("\nKrok 7: Chmielenie na aromat:")
+    print("Po 60 minutach gotowania wyłącz grzanie i dodaj kolejną porcję chmielu (na aromat).")
+    decyzja = input("Czy dodałeś chmiel aromatyczny? (tak/nie): ").strip().lower()
+    if decyzja == "tak":
+        print("Bardzo dobra decyzja.")
+    else:
+        print("To krok opcjonalny – możesz go pominąć.")
+
+    # Krok 8: Chłodzenie brzeczki
+    print("\nKrok 8: Chłodzenie brzeczki:")
+    print("Schłodź brzeczkę do temperatury fermentacji.")
+    while True:
+        decyzja = input("Czy brzeczka osiągnęła temperaturę fermentacji? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Przenieś brzeczkę do fermentora, zmierz ekstrakt początkowy i dodaj drożdże.")
+            break
+        else:
+            print("Zaczekaj na odpowiednią temperaturę.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 9: Fermentacja
+    print("\nKrok 9: Fermentacja:")
+    print("Utrzymuj stałą temperaturę fermentacji. Pamiętaj, że w pierwszych trzech dniach fermentacja może podnieść temperaturę o ok. 2°C (fermentacja burzliwa). Cała fermentacja trwa zwykle 6–10 dni. Po zakończeniu fermentacji mierz ekstrakt końcowy codziennie przez 3 dni.")
+    while True:
+        decyzja = input("Czy ekstrakt końcowy nie zmienia się przez 3 kolejne pomiary? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Czas na butelkowanie.")
+            break
+        else:
+            print("Kontynuuj codzienne pomiary, aż wyniki będą stabilne.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 10: Butelkowanie
+    print("\nKrok 10: Butelkowanie:")
+    print("Przygotuj butelki, dodaj odpowiednią ilość cukru do refermentacji i zakapsluj.")
+    while True:
+        decyzja = input("Czy piwo zostało zabutelkowane? (tak/nie): ").strip().lower()
+        if decyzja == "tak":
+            print("Odstaw butelki w zacienione miejsce na co najmniej tydzień.")
+            break
+        else:
+            print("Kontynuuj butelkowanie.")
+            input("Wciśnij Enter, aby kontynuować...")
+
+    # Krok 11: Leżakowanie
+    print("\nKrok 11: Leżakowanie:")
+    decyzja = input("Czy piwo wymaga leżakowania? (tak/nie): ").strip().lower()
+    if decyzja == "tak":
+        print("Pozostaw piwo w ciemnym, chłodnym miejscu na wymagany czas.")
+    else:
+        print("Możesz przenieść piwo do lodówki, aby wydłużyć jego trwałość.")
+        input("Wciśnij Enter, aby zakończyć...")
+
+    # Zakończenie
+    print("\nGratulacje! Piwo jest gotowe do spożycia.")
+
+# Uruchomienie procedury
+piwerko()
